@@ -37,9 +37,15 @@ h1 {
     background-color: #0056b3;
 }
 
+#reset-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
 .status {
     margin: 15px 0;
-    color: #666;
+    font-weight: bold;
+    min-height: 24px;
 }
 
 .result-container {
@@ -47,9 +53,31 @@ h1 {
     padding: 10px;
     background-color: #f8f9fa;
     border-radius: 5px;
+    text-align: left;
 }
 
 .result-container p {
     margin: 5px 0;
     word-break: break-all;
+}
+
+.result-container strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.result-container button {
+    margin-top: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.result-container button:hover {
+    background-color: #218838;
 }

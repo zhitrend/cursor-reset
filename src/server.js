@@ -22,7 +22,7 @@ function getStorageFilePath() {
     case 'linux':
       return path.join(os.homedir(), '.config', 'Cursor', 'User', 'globalStorage', 'storage.json');
     default:
-      throw new Error(`Unsupported platform: ${platform}`);
+      throw new Error(`不支持的操作系统: ${platform}`);
   }
 }
 
@@ -38,7 +38,7 @@ async function backupFile(filePath) {
       .catch(() => false);
 
     if (!fileExists) {
-      return 'No existing file to backup';
+      return '没有找到现有文件进行备份';
     }
 
     const timestamp = new Date().toISOString().replace(/[:\.]/g, '_');
@@ -47,8 +47,8 @@ async function backupFile(filePath) {
     await fs.copyFile(filePath, backupPath);
     return backupPath;
   } catch (error) {
-    console.error('Backup failed:', error);
-    return `Backup failed: ${error.message}`;
+    console.error('备份失败:', error);
+    return `备份失败: ${error.message}`;
   }
 }
 
@@ -56,6 +56,13 @@ async function backupFile(filePath) {
 app.post('/reset', async (req, res) => {
   try {
     const storagePath = getStorageFilePath();
+    
+    // 检查是否有权限访问目标目录
+    try {
+      await fs.access(path.dirname(storagePath), fs.constants.W_OK);
+    } catch (accessError) {
+      throw new Error(`无法访问配置文件目录。请检查权限: ${accessError.message}`);
+    }
     
     // Backup existing file
     const backupResult = await backupFile(storagePath);
@@ -66,7 +73,7 @@ app.post('/reset', async (req, res) => {
       data = JSON.parse(await fs.readFile(storagePath, 'utf8'));
     } catch (readError) {
       if (readError.code !== 'ENOENT') {
-        throw readError;
+        throw new Error(`读取配置文件失败: ${readError.message}`);
       }
     }
     
@@ -77,7 +84,11 @@ app.post('/reset', async (req, res) => {
     data.deviceId = newDeviceId;
     
     // Write updated data
-    await fs.writeFile(storagePath, JSON.stringify(data, null, 2), 'utf8');
+    try {
+      await fs.writeFile(storagePath, JSON.stringify(data, null, 2), 'utf8');
+    } catch (writeError) {
+      throw new Error(`写入新的设备ID失败: ${writeError.message}`);
+    }
     
     res.json({
       success: true,
@@ -85,7 +96,7 @@ app.post('/reset', async (req, res) => {
       backupFile: backupResult
     });
   } catch (error) {
-    console.error('Reset failed:', error);
+    console.error('重置失败:', error);
     res.status(500).json({ 
       success: false, 
       error: error.message 
@@ -101,5 +112,5 @@ app.get('/', (req, res) => {
 // Create server and listen
 const server = app.listen(PORT, 'localhost', function() {
   const port = server.address().port;
-  console.log(`Cursor Reset Tool running on http://localhost:${port}`);
+  console.log(`Cursor重置工具正在运行于 http://localhost:${port}`);
 });

@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursor Reset Tool</title>
+    <title>编辑器设备ID重置工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Cursor Device ID Reset（白~）</h1>
-        <div id="status-message" class="status"></div>
-        <button id="reset-btn">Reset Device ID</button>
-        <div id="result-container" class="result-container">
-            <p id="device-id-display"></p>
-            <p id="backup-file-display"></p>
+        <div class="editor-reset-section">
+            <h1>Cursor 设备ID重置（白~）</h1>
+            <div id="cursor-status-message" class="status"></div>
+            <button id="cursor-reset-btn">重置 Cursor 设备ID</button>
+            <div id="cursor-result-container" class="result-container"></div>
+        </div>
+        
+        <div class="editor-reset-section">
+            <h1>Windsurf 设备ID重置（浪~）</h1>
+            <div id="windsurf-status-message" class="status"></div>
+            <button id="windsurf-reset-btn">重置 Windsurf 设备ID</button>
+            <div id="windsurf-result-container" class="result-container"></div>
         </div>
     </div>
     <script src="/script.js"></script>

@@ -1,0 +1,20 @@
+{
+  "name": "cursor-reset",
+  "version": "1.0.0",
+  "description": "Web interface for resetting Cursor device ID",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -64,4 +64,4 @@ This tool is developed for research and educational purposes only. Use responsib
 
 ## Multilingual Support
 
-- [中文文档](README.EN-US.md)
+- [中文文档](README.md)

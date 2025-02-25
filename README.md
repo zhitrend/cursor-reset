@@ -61,4 +61,4 @@ npm start
 
 ## 多语言支持
 
-- [English Documentation](README.md)
+- [English Documentation](README.zh-CN.md)

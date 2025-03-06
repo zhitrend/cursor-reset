@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football in Triangle</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const triangle = {
+            points: [
+                { x: 100, y: 500 },
+                { x: 700, y: 500 },
+                { x: 400, y: 100 }
+            ],
+            color: 'green'
+        };
+
+        const football = {
+            x: 400,
+            y: 100,
+            radius: 10,
+            color: 'red',
+            velocity: { x: 2, y: 2 },
+            gravity: 0.5,
+            restitution: 0.8
+        };
+
+        function drawTriangle() {
+            ctx.fillStyle = triangle.color;
+            ctx.beginPath();
+            ctx.moveTo(triangle.points[0].x, triangle.points[0].y);
+            ctx.lineTo(triangle.points[1].x, triangle.points[1].y);
+            ctx.lineTo(triangle.points[2].x, triangle.points[2].y);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawFootball() {
+            ctx.fillStyle = football.color;
+            ctx.beginPath();
+            ctx.arc(football.x, football.y, football.radius, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function updateFootball() {
+            football.velocity.y += football.gravity;
+            football.x += football.velocity.x;
+            football.y += football.velocity.y;
+
+            // Check for collision with triangle
+            const pointInTriangle = (p, a, b, c) => {
+                const v0 = { x: c.x - a.x, y: c.y - a.y };
+                const v1 = { x: b.x - a.x, y: b.y - a.y };
+                const v2 = { x: p.x - a.x, y: p.y - a.y };
+                const dot00 = v0.x * v0.x + v0.y * v0.y;
+                const dot01 = v0.x * v1.x + v0.y * v1.y;
+                const dot02 = v0.x * v2.x + v0.y * v2.y;
+                const dot11 = v1.x * v1.x + v1.y * v1.y;
+                const dot12 = v1.x * v2.x + v1.y * v2.y;
+                const invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+                const u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+                const v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+                return u >= 0 && v >= 0 && u + v <= 1;
+            };
+
+            if (pointInTriangle({ x: football.x, y: football.y }, triangle.points[0], triangle.points[1], triangle.points[2])) {
+                football.velocity.y = -football.velocity.y * football.restitution;
+                football.velocity.x = -football.velocity.x * football.restitution;
+            }
+
+            // Check for collision with canvas boundaries
+            if (football.x - football.radius < 0 || football.x + football.radius > canvas.width) {
+                football.velocity.x = -football.velocity.x * football.restitution;
+            }
+            if (football.y - football.radius < 0) {
+                football.velocity.y = -football.velocity.y * football.restitution;
+            }
+            if (football.y + football.radius > canvas.height) {
+                football.velocity.y = -football.velocity.y * football.restitution;
+            }
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawTriangle();
+            drawFootball();
+            updateFootball();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>

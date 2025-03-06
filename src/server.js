@@ -60,6 +60,13 @@ async function backupFile(filePath) {
 async function resetDeviceId(editor) {
   const storagePath = getStorageFilePath(editor);
   
+  // 首先确保目录存在
+  try {
+    await fs.mkdir(path.dirname(storagePath), { recursive: true });
+  } catch (mkdirError) {
+    throw new Error(`无法创建${editor}配置文件目录: ${mkdirError.message}`);
+  }
+  
   // 检查是否有权限访问目标目录
   try {
     await fs.access(path.dirname(storagePath), fs.constants.W_OK);

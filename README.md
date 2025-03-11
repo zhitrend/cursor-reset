@@ -18,7 +18,7 @@ A web-based utility tool that helps manage Cursor editor's device identification
 
 1. Clone the repository
 ```bash
-git clone https://github.com/zhangrongwu/cursor-reset.git
+git clone https://github.com/zhitrend/cursor-reset.git
 cd cursor-reset
 ```
 

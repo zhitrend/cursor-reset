@@ -18,7 +18,7 @@
 
 1. 克隆仓库
 ```bash
-git clone https://github.com/zhangrongwu/cursor-reset.git
+git clone https://github.com/zhitrend/cursor-reset.git
 cd cursor-reset
 ```
 

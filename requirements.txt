@@ -1,0 +1,8 @@
+selenium
+requests
+PyYAML
+colorama
+fake_useragent
+beautifulsoup4
+pyperclip
+Pillow
